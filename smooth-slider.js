@@ -1,9 +1,10 @@
 /**
  * This slider requires JQuery
  *
- * 1. Create a div, with class 'smoothSlider' with child img elements
+ * 1. Create a div with a collection of slide elements as children
  * 2. Create 'next' and 'previous' buttons with ids 'smoothSliderNext' and 'smoothSliderPrev' respectively
- * 3. Cash out on an awesome slider $$$
+ * 3. Execute smoothSlider() on the div
+ * 4. Cash out on an awesome slider $$$
 **/
 
 var container;
@@ -12,8 +13,8 @@ var imgArray = [];
 var carousel;
 var currentImgIndex = 0;
 
-$(window).on('load', function() {
-	container = $('.smoothSlider');
+$.fn.smoothSlider = function() {
+	container = this;
 	left = container.width() / 2;
 	imgArray = createImgArray(container);
 
@@ -64,7 +65,7 @@ $(window).on('load', function() {
 	$('#smoothSliderPrev').on('click', function() {
 		return moveCarousel('prev');
 	});
-});
+};
 
 function createImgArray(element) {
 	var returnArray = [];
