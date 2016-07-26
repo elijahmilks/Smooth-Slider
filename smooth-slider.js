@@ -11,7 +11,7 @@ var container; // container is the div that the entire slider resides in. This i
 var left; // left is a global variable to hold the 'left' css value while calculating proper 'left' value for each image to be in the center of the container
 var leftArray = []; // leftArray[] holds the 'left' values for each image, [0] is the first child of container
 var carousel; // carousel is the div wrapping all of the images. This is the element that will have the 'left' attribute applied to it
-var currentImgIndex = 0; // currentImgIndex is the index of the current image displayed inside of leftArray[]
+var currentImgIndex = 0; // currentImgIndex is the index of the current image displayed inside of leftArray[], change here to set first image index
 
 $.fn.smoothSlider = function() {
 	container = this; // set container to the element this function is called on
