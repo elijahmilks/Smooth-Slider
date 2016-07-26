@@ -13,7 +13,10 @@ var leftArray = []; // leftArray[] holds the 'left' values for each image, [0] i
 var carousel; // carousel is the div wrapping all of the images. This is the element that will have the 'left' attribute applied to it
 var currentImgIndex = 0; // currentImgIndex is the index of the current image displayed inside of leftArray[], change here to set first image index
 
-$.fn.smoothSlider = function() {
+// Options variables
+var autoSlide = 0;
+
+$.fn.smoothSlider = function(options) {
 	container = this; // set container to the element this function is called on
 	left = container.width() / 2; // setting original width to half of the container will make calculations more simple in createLeftArray()
 	leftArray = createLeftArray(container); // make leftArray out of children of container
@@ -32,7 +35,15 @@ $.fn.smoothSlider = function() {
 	$('#smoothSliderPrev').on('click', function() {
 		return moveCarousel('prev');
 	});
+
+	handleOptions(options); // instantiate options
 };
+
+/**
+ *
+ * Slider Instantiation/Movement Functions
+ *
+**/
 
 // createLeftArray() will return an array with getLeft() of each child of element parameter
 function createLeftArray(element) {
@@ -140,10 +151,34 @@ window.addEventListener('resize', function() {
 		left = container.width() / 2; // set left to half of container width to make calculations in createLeftArray() easier
 		leftArray = createLeftArray(carousel); // make leftArray out of children of carousel
 		carousel.css('left', leftArray[currentImgIndex]); // set 'left' to center current image
+		handleOptions(); // check for any options to run on slider
 	}, 1200, 'resize'); // wait 1200 sec after final resize to execute above code
 });
 
-// this function creates setTimeout functions for n number of functions
+/**
+ *
+ * Slider Options Functions
+ *
+**/
+
+var autoSlideInterval;
+// this function makes the carousel slide automatically every 'autoSlide' seconds
+function startAutoSlide() {
+	// if (autoSlideInterval) { // if the interval has been set already
+		clearInterval(autoSlideInterval); // clear the interval
+	// }
+	// MAYBE SHOULD WAIT FOR FINAL RESIZE EVENT??? TEST TO FIND OUT
+	var interval = autoSlide * 1000; // * 1000 to convert s to ms
+	autoSlideInterval = setInterval(function() { moveCarousel('next'); }, interval); // call moveCarousel('next') every interval
+}
+
+/**
+ *
+ * Maintenance Functions
+ *
+**/
+
+// this function creates setTimeout functions for n number of functions, n identified by uniqueId
 var waitForFinalEvent = (function () {
 	var timers = {};
 	return function (callback, ms, uniqueId) {
@@ -156,3 +191,17 @@ var waitForFinalEvent = (function () {
 		timers[uniqueId] = setTimeout(callback, ms);
 	};
 })();
+
+function handleOptions(options) {
+	if (options) {
+		if (options.autoSlide) {
+			autoSlide = options.autoSlide;
+		}
+	}
+
+	if (autoSlide >= 0.5) {
+		startAutoSlide();
+	} else {
+		console.error('Slider: autoSlide needs to be >= 1/2 second.');
+	}
+}
