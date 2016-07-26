@@ -20,46 +20,7 @@ $.fn.smoothSlider = function() {
 
 	container.css('overflow-x', 'hidden'); // make container restrict vision of slider elements
 
-	carousel = document.createElement('div'); // carousel is a new element to hold wrap slider elements
-	carousel.className = ('carousel'); // give carousel a targetable class
-
-	var children = container.children(); // grab all child elements of container to put them inside of carousel
-
-	if (children.length > 0) { // if the container has children, make the carousel element
-		for (var i = 0; i < children.length; i++) { // iterate over all children
-			carousel.appendChild(children[i]); // add child as a child node of carousel
-		}
-
-		while (container.firstChild) { // while container has > 0 children
-			container.removeChild(container.firstChild); // remove first child
-		}
-
-		container.append(carousel); // nest carousel inside of container element
-
-		carousel = $('.carousel'); // target .carousel
-		// apply css to carousel
-		carousel.css('left', leftArray[currentImgIndex]); // set 'left' to center current image
-		carousel.css('white-space', 'nowrap');
-		carousel.css('transition', '1s');
-		carousel.css('position', 'relative');
-	} else { // else, we got beef bro
-		console.error('Slider: please add children elements to your smoothSlider element');
-	}
-
-	var i = 0; // index to know current position in carousel.children()
-	carousel.children().each(function() {
-		if (i == currentImgIndex) { // if this is the current image, it will be focused on, and should be completely opaque
-			$(this).css('opacity', '1');
-		} else { // otherwise make it half opacity
-			$(this).css('opacity', '.5');
-		}
-
-		// add other styles for the iamges
-		$(this).css('height', '100%');
-		$(this).css('width', 'auto');
-		$(this).css('transition', '1s');
-		i++; // increase index
-	});
+	carousel = makeCarousel(container); // make carousel to hold children of container
 
 	// THESE BELOW SHOULD BE GENERATED RATHER THAN CREATED BY USER
 	// set next button on click
@@ -125,6 +86,52 @@ function moveCarousel(direction) {
 			$(this).css('opacity', '.5');
 		}
 	});
+}
+
+// this function takes the element holding all slider elements, and returns a carousel element with the same children, and some styles
+function makeCarousel(outerElement) {
+	carousel = document.createElement('div'); // carousel is a new element to hold wrap slider elements
+	carousel.className = ('carousel'); // give carousel a targetable class
+
+	var children = outerElement.children(); // grab all child elements of outerElement to put them inside of carousel
+
+	if (children.length > 0) { // if the outerElement has children, make the carousel element
+		for (var i = 0; i < children.length; i++) { // iterate over all children
+			carousel.appendChild(children[i]); // add child as a child node of carousel
+		}
+
+		while (outerElement.firstChild) { // while outerElement has > 0 children
+			outerElement.removeChild(outerElement.firstChild); // remove first child
+		}
+
+		outerElement.append(carousel); // nest carousel inside of outerElement element
+
+		carousel = $('.carousel'); // target .carousel
+		// apply css to carousel
+		carousel.css('left', leftArray[currentImgIndex]); // set 'left' to center current image
+		carousel.css('white-space', 'nowrap');
+		carousel.css('transition', '1s');
+		carousel.css('position', 'relative');
+	} else { // else, we got beef bro
+		console.error('Slider: please add children elements to your smoothSlider element');
+	}
+
+	var i = 0; // index to know current position in carousel.children()
+	carousel.children().each(function() {
+		if (i == currentImgIndex) { // if this is the current image, it will be focused on, and should be completely opaque
+			$(this).css('opacity', '1');
+		} else { // otherwise make it half opacity
+			$(this).css('opacity', '.5');
+		}
+
+		// add other styles for the iamges
+		$(this).css('height', '100%');
+		$(this).css('width', 'auto');
+		$(this).css('transition', '1s');
+		i++; // increase index
+	});
+
+	return carousel;
 }
 
 // when window is resized, reinstantiate leftArray, and reapply proper 'left' value
