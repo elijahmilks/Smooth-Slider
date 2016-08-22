@@ -4,7 +4,7 @@
  * 1. Create a div with a collection of slide elements as children
  * 2. Create 'next' and 'previous' buttons with ids 'smoothSliderNext' and 'smoothSliderPrev' respectively
  * 3. Execute smoothSlider() on the div
- * 4. Cash out on an awesome slider $$$
+ * 4. Ca$h out on an awe$ome $lider $$$
 **/
 
 var container; // container is the div that the entire slider resides in. This is the element that .smoothSlider() is called on
